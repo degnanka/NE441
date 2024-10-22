@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Calculatrice-v3" basedir="." default="run">
+	<property name="buildir" value="build" />
+	<property name="classesDir" value="${buildir}/classes" />
+	<property name="jarDir" value="${buildir}/jar" />
+	<property name="srcDir" value="src" />
+	<property name="version" value="3.0" />
+	<property name="jarName" value="calculatrice-v${version}.jar" />
+	<property name="mainClass" value="fr.esisar.calculatrice.Calculateur" />
+
+	<target name="clean">
+		<delete dir="${buildir}" />
+
+	</target>
+
+	<target name="compile" depends="clean">
+		<mkdir dir="${classesDir}" />
+		<javac srcdir="${srcDir}" destdir="${classesDir}"
+			includeantruntime="false" />
+	</target>
+
+
+	<target name="package" depends="compile">
+		<mkdir dir="${jarDir}" />
+		<jar destfile="${jarDir}/${jarName}" baseDir="${classesDir}">
+			<manifest>
+				<attribute name="Main-Class" value="${mainClass}" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="run" depends="package">
+		<java jar="${jarDir}/${jarName}" fork="true" />
+	</target>
+	
+	
+    <target name="javadoc" depends="run">
+        <mkdir dir="doc"/>
+        <javadoc destdir="doc" sourcepath="${srcDir}" packagenames="fr.esisar.calculatrice.*" 
+                 author="Degnan" version="3.0" use="true" windowtitle="My API Documentation"
+                 verbose="true" doctitle="My Project API Documentation">
+            <classpath>
+                <path path="${classesDir}"/>
+            </classpath>
+        </javadoc>
+    </target>
+</project>
